@@ -1,0 +1,15 @@
+package mycompany.Avance4AWEB.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ImagenProductoDTO {
+    private Long id;
+    private String url;
+    private Integer orden;
+    private Boolean principal;
+}
