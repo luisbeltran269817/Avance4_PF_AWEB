@@ -1,4 +1,4 @@
-package dto;
+package mycompany.Avance4AWEB.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
