@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,5 +48,21 @@ public class GlobalExceptionHandler {
 
         ErrorDTO errorDTO = new ErrorDTO("Error al buscar", detalles, LocalDateTime.now());
         return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ErrorDTO> manejarResponseStatus(ResponseStatusException ex) {
+        List<String> detalles = new ArrayList<>();
+
+        if(ex.getReason()!=null){
+            detalles.add(ex.getReason());
+        }else{
+            detalles.add("Error al procesar la solicitud");
+        }
+
+        HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
+
+        ErrorDTO errorDTO = new ErrorDTO(status.getReasonPhrase(), detalles, LocalDateTime.now());
+        return new ResponseEntity<>(errorDTO, status);
     }
 }

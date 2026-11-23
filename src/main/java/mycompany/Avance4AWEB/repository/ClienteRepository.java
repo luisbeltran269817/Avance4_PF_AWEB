@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByCorreo(String correo);
+
+    //para solo validar si existe ese correo sin traer entidad
+    boolean existsByCorreo(String correo);
 }

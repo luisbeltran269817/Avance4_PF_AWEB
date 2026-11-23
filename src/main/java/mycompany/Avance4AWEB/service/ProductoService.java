@@ -23,7 +23,6 @@ public class ProductoService {
     /**
      * consigue todos los productos con repository, despues los convierte a dto
      * @return lista de todos los productos como DTO
-     *
      * NOTA: este no lo termine usando para la pantalla, pero lo dejare porque puede
      * ser util en alguna otra pantalla que se necesiten mostrar todos los productos
      */
