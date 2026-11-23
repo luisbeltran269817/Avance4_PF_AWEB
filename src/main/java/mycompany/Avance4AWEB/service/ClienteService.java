@@ -2,9 +2,12 @@ package mycompany.Avance4AWEB.service;
 
 import jakarta.transaction.Transactional;
 import mycompany.Avance4AWEB.dto.ClienteResponse;
+import mycompany.Avance4AWEB.dto.PerfilResponse;
 import mycompany.Avance4AWEB.dto.RegistroClienteRequest;
+import mycompany.Avance4AWEB.exception.ResourceNotFoundException;
 import mycompany.Avance4AWEB.model.Carrito;
 import mycompany.Avance4AWEB.model.Cliente;
+import mycompany.Avance4AWEB.model.Usuario;
 import mycompany.Avance4AWEB.repository.ClienteRepository;
 import mycompany.Avance4AWEB.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +66,14 @@ public class ClienteService {
                 guardado.getCorreo(),
                 guardado.getTelefono(),
                 guardado.getFechaRegistro()
+        );
+    }
+
+    public PerfilResponse verMiPerfil(String correo){
+        Usuario perfil = usuarioRepository.findByCorreo(correo).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        return new PerfilResponse(
+                perfil.getNombre(),
+                perfil.getCorreo()
         );
     }
 }
