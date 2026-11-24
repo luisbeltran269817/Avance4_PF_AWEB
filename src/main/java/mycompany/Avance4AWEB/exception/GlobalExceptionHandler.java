@@ -4,6 +4,7 @@ import mycompany.Avance4AWEB.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -64,5 +65,18 @@ public class GlobalExceptionHandler {
 
         ErrorDTO errorDTO = new ErrorDTO(status.getReasonPhrase(), detalles, LocalDateTime.now());
         return new ResponseEntity<>(errorDTO, status);
+    }
+
+    //esta excepcion se lanza si se llama un metodo http del controlador que no existe (get, post, put, etc)
+    //me paso por menso por no actualizar los metodos http al probar endpoints xd
+    //y por si acaso pasa, es mejor que se vea el mensaje de excepcion controlada en vez del stacktrace gigante y feo
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorDTO> manejarErrorMalMetodo(HttpRequestMethodNotSupportedException ex){
+        List<String> detalles = new ArrayList<>();
+
+        detalles.add("Use el metodo correcto de peticion para la api");
+
+        ErrorDTO errorDTO = new ErrorDTO("Error al hacer peticion", detalles, LocalDateTime.now());
+        return new ResponseEntity<>(errorDTO, HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
