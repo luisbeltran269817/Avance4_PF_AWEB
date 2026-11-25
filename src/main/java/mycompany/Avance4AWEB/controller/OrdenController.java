@@ -1,5 +1,10 @@
 package mycompany.Avance4AWEB.controller;
 
+import jakarta.validation.Valid;
+import mycompany.Avance4AWEB.dto.OrdenRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.servlet.http.HttpServletRequest;
 import mycompany.Avance4AWEB.dto.OrdenDTO;
 import mycompany.Avance4AWEB.model.EstadoOrden;
@@ -24,5 +29,12 @@ public class OrdenController {
     public ResponseEntity<List<OrdenDTO>> listarMisOrdenes(HttpServletRequest request, @RequestParam(required = false) EstadoOrden estado) {
         String correo = (String) request.getAttribute("correo");
         return ResponseEntity.ok(ordenService.listarOrdenes(correo, estado));
+    }
+
+    @PostMapping
+    public ResponseEntity<OrdenDTO> crearOrden(@Valid @RequestBody OrdenRequest ordenRequest, HttpServletRequest request) {
+        String correo = (String) request.getAttribute("correo");
+        OrdenDTO orden = ordenService.crearOrden(ordenRequest, correo);
+        return new ResponseEntity<>(orden, HttpStatus.CREATED);
     }
 }
